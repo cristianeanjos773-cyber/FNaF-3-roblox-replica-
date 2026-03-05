@@ -3,6 +3,7 @@
 -- tenho certeza que voce nem ta mais olhando
 
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Player = Players.LocalPlayer :: Player
 local Character = Player.Character or Player.CharacterAdded:Wait() :: Model
 local Humanoid = Character:WaitForChild("Humanoid") :: Humanoid 
@@ -12,6 +13,8 @@ local CameraButtonsFolder = CameraGui:WaitForChild("CameraButtons") :: Folder
 local CameraParts = workspace:WaitForChild("CameraParts") :: Folder
 local CameraProx = workspace:WaitForChild("ProxCameraPart"):WaitForChild("CameraProx") :: ProximityPrompt
 local PlayerCamera = workspace.CurrentCamera :: Camera
+local Remote_Events = ReplicatedStorage:WaitForChild("ReplicatedStorage"):WaitForChild("Remote_Events") :: Folder
+local CallToPlace = Remote_Events:WaitForChild("CallToPlace") :: RemoteEvent
 
 local CameraCFramesArr = {
    (CameraParts:WaitForChild("Cam1") :: Part).CFrame,
@@ -29,12 +32,17 @@ local Map_Cam_Button_To_CFrame = {
     ["Cam5"] = CameraCFramesArr[5],  
 }
 
+--local CameraBeingWatched = Player:GetAttribute(["Watching camera:"])
+
 local function _ManageCamera()
     for _, Buttons in CameraButtonsFolder:GetChildren() do 
         local Button = Buttons :: GuiButton
         Button.Activated:Connect(function() 
              PlayerCamera.CameraType = Enum.CameraType.Scriptable 
              PlayerCamera.CFrame = Map_Cam_Button_To_CFrame[Button.Name] 
+             Player:SetAttribute('["Watching camera:"]', Button.Name)
+            
+             CallToPlace:FireServer()
              print(Button.Name, PlayerCamera.CFrame)
         end) 
     end
@@ -49,5 +57,7 @@ LeaveButton.Activated:Connect(function()
      Humanoid.JumpHeight = 7.2
      PlayerCamera.CameraType = Enum.CameraType.Custom
 end)
+
+--TODO: Finish The CallToPlace mechanic. 
 
 _ManageCamera()

@@ -1,3 +1,4 @@
-local SpringTrapAIStates = require("./SpringTrapAIStates")
-local SpringTrapService = require("./SpringTrapService")
+local SpringTrapAIStates = require(script.Parent.SpringTrapAIStates)
+local SpringTrapService = require(script.Parent.SpringTrapService)
 
+SpringTrapService.StartAI()  

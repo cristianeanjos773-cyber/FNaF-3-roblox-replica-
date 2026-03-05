@@ -21,7 +21,6 @@ function SpringTrapAIStates.SetState(RequestedState: string)
     if not requestedValue then 
         return 
     end
-    
 
     if SpringStateAttribute == SpringTrapAIStates.SpringTrapStates["Killing_Player"] then 
         return 
@@ -32,6 +31,7 @@ function SpringTrapAIStates.SetState(RequestedState: string)
     end
     
     SpringTrapModel:SetAttribute("StateMachine", requestedValue)   
+    print(`State NUMBER IS: '{SpringTrapModel:GetAttribute("StateMachine")}', AND IT'S REQUESTED STATE IS: '{RequestedState}'`)
  
 end 
 
