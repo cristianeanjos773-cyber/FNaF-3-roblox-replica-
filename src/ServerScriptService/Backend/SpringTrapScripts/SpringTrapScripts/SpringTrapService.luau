@@ -16,7 +16,8 @@ SpringTrapService.TIME_TO_TELEPORT = Night * 1.5
 
 function SpringTrapService.Move_To_Place_Called(CalledPart: Part) 
     CallToPlace.OnServerEvent:Connect(function()  
-   
+        SpringTrapAIStates.SetState("Idle") 
+        SpringTrapCharacter:MoveTo(CalledPart.Position)
    end)
 end
 

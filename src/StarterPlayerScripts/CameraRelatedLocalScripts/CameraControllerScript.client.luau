@@ -14,7 +14,8 @@ local CameraParts = workspace:WaitForChild("CameraParts") :: Folder
 local CameraProx = workspace:WaitForChild("ProxCameraPart"):WaitForChild("CameraProx") :: ProximityPrompt
 local PlayerCamera = workspace.CurrentCamera :: Camera
 local Remote_Events = ReplicatedStorage:WaitForChild("ReplicatedStorage"):WaitForChild("Remote_Events") :: Folder
-local CallToPlace = Remote_Events:WaitForChild("CallToPlace") :: RemoteEvent
+local CallToPlaceRE = Remote_Events:WaitForChild("CallToPlace") :: RemoteEvent
+local AudioPlay = CameraGui:WaitForChild("PlayAudio") :: TextButton
 
 local CameraCFramesArr = {
    (CameraParts:WaitForChild("Cam1") :: Part).CFrame,
@@ -32,7 +33,6 @@ local Map_Cam_Button_To_CFrame = {
     ["Cam5"] = CameraCFramesArr[5],  
 }
 
---local CameraBeingWatched = Player:GetAttribute(["Watching camera:"])
 
 local function _ManageCamera()
     for _, Buttons in CameraButtonsFolder:GetChildren() do 
@@ -41,8 +41,6 @@ local function _ManageCamera()
              PlayerCamera.CameraType = Enum.CameraType.Scriptable 
              PlayerCamera.CFrame = Map_Cam_Button_To_CFrame[Button.Name] 
              Player:SetAttribute('["Watching camera:"]', Button.Name)
-            
-             CallToPlace:FireServer()
              print(Button.Name, PlayerCamera.CFrame)
         end) 
     end
@@ -56,6 +54,17 @@ LeaveButton.Activated:Connect(function()
      Humanoid.WalkSpeed = 16
      Humanoid.JumpHeight = 7.2
      PlayerCamera.CameraType = Enum.CameraType.Custom
+end)
+
+AudioPlay.Activated:Connect(function()
+    local CameraBeingWatched = Player:GetAttribute("Watching camera:") :: string 
+    
+    if CameraBeingWatched == nil then 
+        return
+    end 
+
+    CallToPlaceRE:FireServer(CameraBeingWatched)
+
 end)
 
 --TODO: Finish The CallToPlace mechanic. 
