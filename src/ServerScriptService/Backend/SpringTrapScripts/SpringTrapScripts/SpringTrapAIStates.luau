@@ -22,6 +22,11 @@ function SpringTrapAIStates.SetState(RequestedState: string)
         return 
     end
 
+    if requestedValue == SpringStateAttribute then 
+        warn("Tried to ask for the same state, returning. . .")
+        return
+    end
+ 
     if SpringStateAttribute == SpringTrapAIStates.SpringTrapStates["Killing_Player"] then 
         return 
     end 

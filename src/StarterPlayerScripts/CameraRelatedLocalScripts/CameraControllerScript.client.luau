@@ -40,8 +40,7 @@ local function _ManageCamera()
         Button.Activated:Connect(function() 
              PlayerCamera.CameraType = Enum.CameraType.Scriptable 
              PlayerCamera.CFrame = Map_Cam_Button_To_CFrame[Button.Name] 
-             Player:SetAttribute('["Watching camera:"]', Button.Name)
-             print(Button.Name, PlayerCamera.CFrame)
+             Player:SetAttribute("CameraBeingWatched", Button.Name)
         end) 
     end
 end
@@ -57,10 +56,11 @@ LeaveButton.Activated:Connect(function()
 end)
 
 AudioPlay.Activated:Connect(function()
-    local CameraBeingWatched = Player:GetAttribute("Watching camera:") :: string 
+    local CameraBeingWatched = Player:GetAttribute("CameraBeingWatched") :: string 
+    warn(CameraBeingWatched)
     
     if CameraBeingWatched == nil then 
-        return
+        return  
     end 
 
     CallToPlaceRE:FireServer(CameraBeingWatched)
